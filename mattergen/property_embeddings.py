@@ -349,6 +349,22 @@ class SpaceGroupEmbeddingVector(BaseUnconditionalEmbeddingModule):
         """
         return self.embedding(x.long() - 1)
 
+class HEAEmbeddingVector(BaseUnconditionalEmbeddingModule):
+    # If True, we don't need conditional values to evaluate an unconditional score
+    only_depends_on_shape_of_input: bool = True
+
+    def __init__(self, hidden_dim: int):
+        super().__init__()
+        # a vector of learnable parameters of shape (hidden_dim,)
+        self.embedding = torch.nn.Embedding(2, hidden_dim)
+        self.hidden_dim = hidden_dim
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Return embedding of the space group, 1 is subtracted from the space group number to
+        make it zero-indexed.
+        """
+        return self.embedding(x.long())
 
 class ZerosEmbedding(BaseUnconditionalEmbeddingModule):
     """

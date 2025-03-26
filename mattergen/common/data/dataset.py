@@ -156,6 +156,7 @@ class CrystalDataset(BaseDataset):
     transforms: list[Transform] | None = None
 
     def __post_init__(self):
+        # Adding hea property.
         property_names = list(self.properties.keys())
         assert all([s in PROPERTY_SOURCE_IDS for s in property_names]), (
             f"Property names {property_names} are not valid. "
